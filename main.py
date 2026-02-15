@@ -2,9 +2,15 @@ import os
 
 new_lines = []
 
-path = os.path.join(os.path.expanduser("~/Documents/My Games/Rocket League/TAGame/Config"), "TAInput.ini")
-if not os.path.exists(path):
-    path = os.path.join(os.path.expanduser("~/OneDrive/Documents/My Games/Rocket League/TAGame/Config"), "TAInput.ini")
+candidates = [
+    os.path.expanduser("~/Documents/My Games/Rocket League/TAGame/Config/TAInput.ini"),
+    os.path.expanduser("~/OneDrive/Documents/My Games/Rocket League/TAGame/Config/TAInput.ini"),
+    os.path.expanduser("~/.local/share/Steam/steamapps/compatdata/252950/pfx/drive_c/users/steamuser/Documents/My Games/Rocket League/TAGame/Config/TAInput.ini"),
+]
+
+path = next((p for p in candidates if os.path.exists(p)), None)
+if path is None:
+    raise FileNotFoundError("Could not find TAInput.ini in any known location")
 
 with open(path) as TAInput:
     lines = TAInput.readlines()
